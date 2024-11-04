@@ -9,10 +9,13 @@
 ## Member 1: Visualization 
 ## Task: Creates stratified boxplot of text messages by Group.
 
-## Member 2**: Visualization #2
+## Member 2: Visualization #2
 ## Task**: Creates stratified bar charts of text messages by Time.
 
-## Member 3**: Summary Statistics
-## Task**: Creates summary statistics of Text Messages by Group and Time.
+## Member 3: Summary Statistics
+## Task: Creates summary statistics of Text Messages by Group and Time.
 
 
+=======
+#manage changes in an RStudio Project.
+>>>>>>> 68ad43dfbd937c5efa35f25147bab5c5af4b838c
