@@ -1,0 +1,81 @@
+---
+title: "Summary Stats"
+author: "Faruq Gaji"
+date: "2024-11-08"
+output: pdf_document
+---
+
+```{r, echo = TRUE, tinytex=TRUE, warning=FALSE, message=FALSE}
+
+setwd("/cloud/project")
+
+#install.packages("pastecs")
+library(pastecs)
+
+
+#Saving the csv file to object T.M.
+read.csv("TextMessages.csv", header=TRUE) -> T.M.
+
+#colnames(T.M.)
+
+#is.factor(T.M.$Six_months)
+#as.factor(T.M.$Six_months)
+
+#T.M.$Six_months <- as.factor(T.M.$Six_months)
+
+#using the by function to compute the description statistics
+#by(T.M.$Group, T.M.$Six_months, stat.desc)
+# using the by() function didn't produce expected result
+
+#Installing the "reshape package to turn a long dataframe into a wide dataframe
+
+#install.packages("reshape")
+library(reshape)
+#colnames(T.M.)
+
+
+# Update to the data; change from wide data to long data
+# T.M. converted to long_data
+long_data <- melt(T.M., id.vars= c("Participant","Group"), variable.name = 
+"Time", value.name="Value")
+
+#Due to an error in code, coverted the "value" column to read as numeric
+long_data$value <- as.numeric(long_data$value)
+
+#Using the by function the compute descriptive statistics 
+# also included in the by function is the list function which, 
+#divides the variable into two element.
+# the two element is Group and Variable
+#Group to categorical
+#Variable to is Baseline and Six_months
+by(long_data$value, list(Group=long_data$Group, Variable=long_data$variable), stat.desc)
+
+
+#The objective is to calculate summary statistics for VALUE across each GROUP 
+#and VARIABLE which denotes time. 
+#The by() function provides summary statistics for subgroups in the data 
+#when paired with a summary function. 
+
+
+# Summary Stat using dplyr, to confirm the results
+install.packages("dplyr")
+library(dplyr)
+
+# Calculate summary statistics by Group and Variable
+summary_stats <- long_data %>%
+  group_by(Group, variable) %>%
+  summarise(
+    mean_value = mean(value, na.rm = TRUE),
+    median_value = median(value, na.rm = TRUE),
+    sd_value = sd(value, na.rm = TRUE),
+    min_value = min(value, na.rm = TRUE),
+    max_value = max(value, na.rm = TRUE),
+    .groups = 'drop'  # To prevent grouping in the final output
+  )
+
+print(summary_stats)
+
+
+
+```
+
